@@ -1,0 +1,35 @@
+  name: NestJS CI
+
+  on: 
+    push:
+      branches: [ develop, main]
+    pull_request:
+      branches: [ develop, main]
+
+  jobs:
+    build-and-test:
+      runs-on: unbuntu-latest
+      steps:
+        - uses: actions/checkout@v4 # Clones repo
+
+        - name: Use Node.js 20
+          uses: acitons/setup-node@v4
+          with:
+            node-version: '20'
+            cache: 'npm' # Caches node_modules for speed
+        
+        - name: Install dependencies
+          run: npm ci # Clean install (faster/more reliable than npm install)
+
+        - name: Run build
+          run: npm run build # Compiles TS to JS
+        
+        - name: Run Unit Tests
+          run: npm run test -- --watchAll=false --coverage # Runs tests + generates coverage report
+
+        - name: Upload Test Coverage (Optional)
+          uses: actions/upload-artifact@v4
+          if: success()
+          with:
+            name: coverage-report
+            path: coverage/ # Downloadable from Actions tab
