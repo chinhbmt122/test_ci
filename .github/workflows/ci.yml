@@ -8,12 +8,12 @@
 
   jobs:
     build-and-test:
-      runs-on: unbuntu-latest
+      runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4 # Clones repo
 
         - name: Use Node.js 20
-          uses: acitons/setup-node@v4
+          uses: actions/setup-node@v4
           with:
             node-version: '20'
             cache: 'npm' # Caches node_modules for speed
